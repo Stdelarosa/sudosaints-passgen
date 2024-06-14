@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SudoSaint's Passgen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #262727;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin:0;
+            height: 100vh;
+            justify-content: space-between;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .box {
+            border: 1px solid #ffffff;
+            padding: 20px;
+            width: 300px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .buttons {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+        textarea {
+            width: 300px;
+            height: 200px;
+            background-color: #262727;
+            color:#ffffff;
+            border: 1px solid #ffffff;
+            padding: 10px;
+        }
+        .footer {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .contact{
+            margin-top: 5px;
+        }
+        .contact a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #7796cb;
+        }
+        .contact a.github {
+            color:#7796cb;
+        }
+        .contact a.instagram {
+            color: #7796cb;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="box" id="password-box">
+            <p id="password">{{ password }}</p>
+        </div>
+        <div class="input-box">
+            <textarea id="keywords" name="keywords" placeholder="Enter keywords separated by commas">{{ keywords }}</textarea>
+            <div class="buttons">
+                <button onclick="generatePassword()">Generate</button>
+                <button onclick="generatePasswordWithKeywords()">Generate w/ Keywords</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>SudoSaint's Passgen uses the diceware method to generate passwords.</p>
+        <p>Diceware is a trademark of Arnold Reinhold.</p>
+        <div class="contact">
+            <a href="https://www.linkedin.com/in/saint" target=""_blank>LinkedIn</a>
+            <a href="https://github.com/Stdelarosa" target="_blank" class="github">GitHub</a>
+            <a href="https://www.instagram.com/sudosaint/" target="_blank" class="instagram">Instagram</a>
+        </div>
+    </div>
+    <script>
+        function generatePassword() {
+            fetch('/generate', {method: 'POST'})
+            .then(response => response.json())
+            .then(data => document.getElementById('password').innerText = data.password);
+        }
+        function generatePasswordWithKeywords() {
+            const keywords = document.getElementById('keywords').value;
+            fetch('/generate_with_keywords', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({keywords: keywords})
+            })
+            .then(response => response.json())
+            .then(data => document.getElementById('password').innerText = data.password);
+        }
+    </script>
+  </body>
+</html>
