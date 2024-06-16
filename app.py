@@ -9,7 +9,7 @@ with open('eff_large_wordlist.txt', 'r') as file:
 
 @app.route('/')
 def index():
-    return render_template('index.html', password='', keywords='')
+    return render_template('passgen.html', password='', keywords='')
 
 @app.route('/generate', methods=['POST'])
 def generate():
